@@ -5,9 +5,11 @@ export default function TodoList(){
     const [tasks, setTasks] = useState(["laundry", "groceries" ]);
     const [count, setCount] = useState(2)
     const[complete, setComplete] = useState(0)
+    const [incomplete, setIncomplete] = useState(0)
     const [completeIndexes, setCompleteIndexes] = useState([])
-
-  function handleTaskbutton(){
+    const [incompleteIndexes, setInCompleteIndexes] = useState([])
+   const [tasksIndexes, setTaskIndexes] = useState([])
+    function handleTaskbutton(){
     if(input !== ""){
     setTasks([...tasks, input])
     setCount(count + 1)
@@ -22,11 +24,22 @@ export default function TodoList(){
    }
    function handleComplete(index){
     if(!completeIndexes.includes(index)){
-        setCount(count - 1)
         setComplete(complete + 1)
+        setCount(count - 1)
         setCompleteIndexes([...completeIndexes, index])
-        
+        setInCompleteIndexes(incompleteIndexes.filter((i)=> i!==(index)))
+        setIncomplete(incompleteIndexes.includes(index) ? incomplete - 1 : incomplete)
     }
+}
+function handleIncomplete(index){
+    if(!incompleteIndexes.includes(index)){
+    setIncomplete(incomplete + 1)
+    setInCompleteIndexes([...incompleteIndexes, index])
+    setCompleteIndexes(completeIndexes.filter((i)=> i!==(index)))
+    setComplete(completeIndexes.includes(index)? complete - 1 : complete)     
+     setCount(tasksIndexes.includes(index) ? count + 1 : count)   
+     setTaskIndexes([...tasksIndexes, index]) 
+}
 }
      
 return (
@@ -46,13 +59,19 @@ return (
             <button onClick={() => deleteButton(index)}>X</button>
           </span>
           <span>
-            <button onClick={handleComplete}>✅</button>
+            <button onClick={()=>handleComplete(index)}>✅</button>
+          </span>
+          <span>
+            <button onClick={()=>handleIncomplete(index)}>
+            ⭕
+            </button>
           </span>
         </li>
       ))}
     </ul>
     <p> Number of task to be Done: {count}</p>
-    <p> Number of Complete : {complete}</p>
+    <p> Number of Complete Tasks : {complete}</p>
+    <p>Number of Incompleted Tasks : {incomplete}</p>
   </div>
 );
 }
