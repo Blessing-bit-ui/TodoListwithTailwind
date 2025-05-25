@@ -2,8 +2,8 @@ import { useState } from 'react'
 
 export default function TodoList(){
     const [input, setInput] = useState([]);
-    const [tasks, setTasks] = useState(["laundry", "groceries", " picking kid from school" ]);
-    const [count, setCount] = useState(2)
+    const [tasks, setTasks] = useState(["laundry", "groceries"," picking kid from school" ]);
+    const [count, setCount] = useState(3)
     const[complete, setComplete] = useState(0)
     const [incomplete, setIncomplete] = useState(0)
     const [completeIndexes, setCompleteIndexes] = useState([])
@@ -58,7 +58,7 @@ return (
       class=" p-1 border-2 rounded-md w-3/4 mr-4"
     />
     <button onClick={handleTaskbutton} class="bg-black text-white rounded-md p-1 hover:text-black hover:bg-white">Add Task</button>
-    {errors && <p>{errors}</p>}
+    {errors && <p class="text-red-300 text-[15px] italic">{errors}</p>}
    <div class="mt-6">
     <ul>
       {tasks.map((task, index) => (
