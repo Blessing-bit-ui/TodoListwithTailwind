@@ -17,34 +17,38 @@ export default function TodoList(){
     setInput("")
     }
     if(input ==""){
+      setTasks(tasks)
+      setCount(count)
     setErrors("Tasks is required")
     return;
-    }
-    setErrors("")
+   } 
   }
    function deleteButton(index){
     const newTasks=tasks.filter((_,i) =>i !== index)
     setTasks(newTasks)
-    setCount(count - 1)
+    setComplete(completeIndexes.includes(index) ? complete - 1 : complete);
+    setIncomplete(incompleteIndexes.includes(index) ? incomplete - 1 : incomplete)
+    setCount( prevcount => prevcount === 0 ? prevcount : prevcount - 1 );
     setInput("")
+    
    }
    function handleComplete(index){
     if(!completeIndexes.includes(index)){
-        setComplete(complete + 1)
-        setCount(count - 1)
+        setComplete(prevcomplete => prevcomplete < 0 ? prevcomplete: prevcomplete + 1)
+        setCount( prevcount => prevcount === 0 ? prevcount : prevcount - 1 )
         setCompleteIndexes([...completeIndexes, index])
         setInCompleteIndexes(incompleteIndexes.filter((i)=> i!==(index)))
         setIncomplete(incompleteIndexes.includes(index) ? incomplete - 1 : incomplete)
+        setTaskIndexes([...tasksIndexes, index]);
     }
 }
 function handleIncomplete(index){
     if(!incompleteIndexes.includes(index)){
-    setIncomplete(incomplete + 1)
+    setIncomplete(previncomplete => previncomplete < 0? previncomplete : previncomplete  + 1)
     setInCompleteIndexes([...incompleteIndexes, index])
     setCompleteIndexes(completeIndexes.filter((i)=> i!==(index)))
     setComplete(completeIndexes.includes(index)? complete - 1 : complete)     
-     setCount(tasksIndexes.includes(index) ? count + 1 : count)   
-     setTaskIndexes([...tasksIndexes, index]) 
+    setCount(tasksIndexes.includes(index) ? count + 1 : count)   
 }
 }
      
@@ -63,7 +67,7 @@ return (
     <ul>
       {tasks.map((task, index) => (
         <li key={index} class=" shadow-md p-2">
-          {task}{" "}
+          {task}
             <span class="flex justify-end gap-1">
             <button onClick={() => deleteButton(index)} class="text-[30px] transition-transform duration-300 hover:rotate-[15deg]">X</button>
             <button onClick={() => handleComplete(index)} class="text-[20px] transition-transform duration-300 hover:rotate-[20deg]">✅</button>
